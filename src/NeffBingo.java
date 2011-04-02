@@ -39,7 +39,7 @@ public class NeffBingo
       //TODO: Establish a connection
       try
       {
-         String address = "10.37.155.163";
+         String address = getServerAddress();
          mConnection = new Socket(address, 1352);
          mOutToServer = new DataOutputStream(mConnection.getOutputStream());
       }
@@ -156,5 +156,22 @@ public class NeffBingo
    public void resetBoard()
    {
 
+   }
+
+   public String getServerAddress()
+   {
+      String address = "";
+      System.out.print("Enter ip address of server: ");
+      BufferedReader inFromUser =
+            new BufferedReader(new InputStreamReader(System.in));
+      try
+      {
+         address = inFromUser.readLine();
+      }
+      catch(Exception e)
+      {
+         System.out.println(e);
+      }
+      return address;
    }
 }
