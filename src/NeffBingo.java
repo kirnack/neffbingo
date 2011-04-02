@@ -15,7 +15,8 @@ public class NeffBingo
    JFrame mBoard;
    JPanel mPanel;
    JToggleButton[] tButton = new JToggleButton[25];
-
+   BingoListener mClient;
+   
    /**
     * @param args the command line arguments
     */
@@ -27,6 +28,15 @@ public class NeffBingo
 
    public void play()
    {
+
+      //TODO: Establish a connection
+      //Give a handle on the connection to the thread
+      
+      mClient = new BingoListener(this);
+      // Create a new thread to establish a connection
+      Thread thread = new Thread(mClient);
+      // Start the thread.
+      thread.start();
       mQuoteGen = new QuoteGen();
       mBoard = new JFrame();
       mPanel = new JPanel();
@@ -103,5 +113,21 @@ public class NeffBingo
          tButton[12].setForeground(Color.BLACK);
          tButton[12].setText("<html>*Free Space*</html>");
       }
+   }
+
+   /**
+    * Tell the bingo server that a bingo occurred
+    */
+   public void tellBingoServer()
+   {
+
+   }
+
+   /**
+    * Reset the bingo board after someone has won
+    */
+   public void resetBoard()
+   {
+
    }
 }
