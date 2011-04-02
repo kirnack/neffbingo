@@ -30,11 +30,10 @@ public class BingoListener
             new BufferedReader(
             new InputStreamReader(mSocket.getInputStream()));
 
-         System.err.println("here");
          while(true)
          {
             serverMessage = inFromServer.readLine();
-            System.out.println("FROM SERVER: " + serverMessage);
+            System.out.println("Server: " + serverMessage);
          }
 
       }

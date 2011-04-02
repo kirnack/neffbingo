@@ -22,6 +22,7 @@ public class NeffBingo
    BingoListener mClient;
 
    Socket mConnection;
+   DataOutputStream mOutToServer;
    
    /**
     * @param args the command line arguments
@@ -40,20 +41,19 @@ public class NeffBingo
       {
          String address = "10.37.155.163";
          mConnection = new Socket(address, 1352);
+         mOutToServer = new DataOutputStream(mConnection.getOutputStream());
       }
       catch (Exception e)
       {
       }
       //Give a handle on the connection to the thread
 
-      //TODO: throw away test code
-      test();
       mClient = new BingoListener(mConnection, this);
       // Create a new thread to establish a connection
       Thread thread = new Thread(mClient);
       // Start the thread.
       thread.start();
-      test();
+  
       
 
       mQuoteGen = new QuoteGen();
@@ -126,6 +126,14 @@ public class NeffBingo
       {
          tButton[12].setBackground(Color.RED);
          tButton[12].setText("BINGO!");
+         try
+         {
+            mOutToServer.writeBytes("Bingo!\n");
+         }
+         catch(Exception e)
+         {
+            System.out.println(e);
+         }
       }
       else
       {
@@ -148,27 +156,5 @@ public class NeffBingo
    public void resetBoard()
    {
 
-   }
-
-   /**
-    * Code for testing sending messages
-    */
-   public void test()
-   {
-      try
-      {
-         System.out.println("Enter string: ");
-         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(
-            System.in));
-         String message = inFromUser.readLine();
-
-         DataOutputStream outToServer = new DataOutputStream(mConnection.getOutputStream());
-         outToServer.writeBytes(message + ", from client\n");
-         System.err.println(message);
-      }
-      catch (Exception e)
-      {
-         System.out.println(e);
-      }
    }
 }

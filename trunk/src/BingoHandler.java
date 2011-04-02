@@ -26,6 +26,10 @@ public class BingoHandler
     */
    Socket mSocket;
 
+   BufferedReader mReadFromClient;
+   DataOutputStream mOut;
+
+
    /**
     * Constructor
     *
@@ -38,8 +42,12 @@ public class BingoHandler
       mSocket = pSocket;
       mNotifier = BingoNotifier.getInstance();
 
-      //register this handler with the notifier
-      mNotifier.registerConnection(this);
+      //Get a reference to the socket's input stream
+      InputStream in = mSocket.getInputStream();
+      mOut = new DataOutputStream(mSocket.getOutputStream());
+      
+      mReadFromClient = new BufferedReader(new InputStreamReader(in));
+      
    }
 
    /**
@@ -47,6 +55,8 @@ public class BingoHandler
     */
    public void run()
    {
+      //register this handler with the notifier
+      mNotifier.registerConnection(this);
       //TODO: Implement
       //Listen for a bingo from the client
       try
@@ -67,27 +77,22 @@ public class BingoHandler
    public void listenForBingo()
       throws Exception
    {
-      //Get a reference to the socket's input stream
-      InputStream in = mSocket.getInputStream();
-      DataOutputStream out = new DataOutputStream(mSocket.getOutputStream());
-
-      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-
-      //Get messages
-      String clientMessage = reader.readLine();
+      //Get Bingo message from client
+      String clientMessage = mReadFromClient.readLine();
 
       System.out.println("Client: " + clientMessage);
 
-      out.writeBytes(clientMessage + ", test from server\n");
-
+      if ("Bingo!".equals(clientMessage))
+      {
+         tellNotifier();
+      }
    }
    /**
     * Tell the notifier that a bingo occurred
     */
    public void tellNotifier()
    {
-
+      mNotifier.notifyConnections();
    }
 
    /**
@@ -95,6 +100,13 @@ public class BingoHandler
     */
    public void tellClient()
    {
-
+      try
+      {
+         mOut.writeBytes("Win\n");
+      }
+      catch (Exception e)
+      {
+         System.out.println(e);
+      }
    }
 }
