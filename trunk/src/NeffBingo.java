@@ -47,13 +47,13 @@ public class NeffBingo
       //Give a handle on the connection to the thread
 
       //TODO: throw away test code
-      //test();
+      test();
       mClient = new BingoListener(mConnection, this);
       // Create a new thread to establish a connection
       Thread thread = new Thread(mClient);
       // Start the thread.
       thread.start();
-
+      test();
       
 
       mQuoteGen = new QuoteGen();
@@ -163,7 +163,7 @@ public class NeffBingo
          String message = inFromUser.readLine();
 
          DataOutputStream outToServer = new DataOutputStream(mConnection.getOutputStream());
-         outToServer.writeBytes(message + ", from client");
+         outToServer.writeBytes(message + ", from client\n");
          System.err.println(message);
       }
       catch (Exception e)

@@ -51,8 +51,10 @@ public class BingoHandler
       //Listen for a bingo from the client
       try
       {
-         listenForBingo();
-         
+         while (true)
+         {
+            listenForBingo();
+         }
       }
       catch (Exception e)
       {
@@ -77,7 +79,7 @@ public class BingoHandler
 
       System.out.println("Client: " + clientMessage);
 
-      out.writeBytes(clientMessage + ", test");
+      out.writeBytes(clientMessage + ", test from server\n");
 
    }
    /**
