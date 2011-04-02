@@ -181,17 +181,7 @@ public class NeffBingo
    public String getServerAddress()
    {
       String address = "";
-      System.out.print("Enter ip address of server: ");
-      BufferedReader inFromUser =
-            new BufferedReader(new InputStreamReader(System.in));
-      try
-      {
-         address = inFromUser.readLine();
-      }
-      catch(Exception e)
-      {
-         System.out.println(e);
-      }
+      address = JOptionPane.showInputDialog(null, "Enter IP address of server: ");
       return address;
    }
 }
