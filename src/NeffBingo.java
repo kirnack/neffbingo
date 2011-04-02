@@ -23,6 +23,8 @@ public class NeffBingo
 
    Socket mConnection;
    DataOutputStream mOutToServer;
+
+   String mPlayerName;
    
    /**
     * @param args the command line arguments
@@ -35,8 +37,6 @@ public class NeffBingo
 
    public void play()
    {
-
-      //TODO: Establish a connection
       try
       {
          String address = getServerAddress();
@@ -46,8 +46,10 @@ public class NeffBingo
       catch (Exception e)
       {
       }
-      //Give a handle on the connection to the thread
 
+      getPlayerName();
+
+      //Give a handle on the connection to the thread
       mClient = new BingoListener(mConnection, this);
       // Create a new thread to establish a connection
       Thread thread = new Thread(mClient);
@@ -141,7 +143,7 @@ public class NeffBingo
    {
       try
       {
-         mOutToServer.writeBytes("Bingo!\n");
+         mOutToServer.writeBytes("Bingo! " + mPlayerName + "\n");
       }
       catch (Exception e)
       {
@@ -149,12 +151,17 @@ public class NeffBingo
       }
    }
 
+   public void announceWin(String pPlayer)
+   {
+      displayBingo(pPlayer);
+      resetBoard();
+   }
+
    /**
     * Reset the bingo board after someone has won
     */
    public void resetBoard()
    {
-      displayBingo();
       mQuoteGen = new QuoteGen();
       for (int i = 0; i < 25; i++)
       {
@@ -173,9 +180,9 @@ public class NeffBingo
       }
    }
 
-   public void displayBingo()
+   public void displayBingo(String pPlayer)
    {
-      JOptionPane.showMessageDialog(null, "Bingo!");
+      JOptionPane.showMessageDialog(null, "Bingo! " + pPlayer + " wins!");
    }
 
    public String getServerAddress()
@@ -183,5 +190,10 @@ public class NeffBingo
       String address = "";
       address = JOptionPane.showInputDialog(null, "Enter IP address of server: ");
       return address;
+   }
+
+   public void getPlayerName()
+   {
+      mPlayerName =  JOptionPane.showInputDialog(null, "Player name: ");
    }
 }

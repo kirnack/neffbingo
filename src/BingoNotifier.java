@@ -48,11 +48,11 @@ public class BingoNotifier
       mConnections.add(mConnection);
    }
 
-   public void notifyConnections()
+   public void notifyConnections(String pWinner)
    {
       for (BingoHandler client : mConnections)
       {
-         client.tellClient();
+         client.tellClient(pWinner);
       }
    }
 }
