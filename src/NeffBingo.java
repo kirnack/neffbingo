@@ -63,7 +63,6 @@ public class NeffBingo
 
       for (int i = 0; i < 25; i++)
       {
-         String tempStr;
          if (i != 12)
          {
             tButton[i] = new JToggleButton("<html>" + mQuoteGen.getQuote() +
@@ -126,14 +125,7 @@ public class NeffBingo
       {
          tButton[12].setBackground(Color.RED);
          tButton[12].setText("BINGO!");
-         try
-         {
-            mOutToServer.writeBytes("Bingo!\n");
-         }
-         catch(Exception e)
-         {
-            System.out.println(e);
-         }
+         tellBingoServer();
       }
       else
       {
@@ -147,7 +139,14 @@ public class NeffBingo
     */
    public void tellBingoServer()
    {
-
+      try
+      {
+         mOutToServer.writeBytes("Bingo!\n");
+      }
+      catch (Exception e)
+      {
+         System.out.println(e);
+      }
    }
 
    /**
@@ -155,7 +154,28 @@ public class NeffBingo
     */
    public void resetBoard()
    {
+      displayBingo();
+      mQuoteGen = new QuoteGen();
+      for (int i = 0; i < 25; i++)
+      {
+         if (i != 12)
+         {
+            tButton[i].setText("<html>" + mQuoteGen.getQuote() +
+                                           "</html>");
 
+            tButton[i].setSelected(false);
+         }
+         else
+         {
+            // this is the center square, and is generally a free space
+            tButton[i].setText("<html>*Free Space*</html>");
+         }
+      }
+   }
+
+   public void displayBingo()
+   {
+      JOptionPane.showMessageDialog(null, "Bingo!");
    }
 
    public String getServerAddress()
