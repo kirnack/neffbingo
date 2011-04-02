@@ -36,7 +36,8 @@ public class BingoListener
             System.out.println("Server: " + serverMessage);
             if (serverMessage.contains("Win"))
             {
-               mBoard.resetBoard();
+               String[] contents = serverMessage.split(" ");
+               mBoard.announceWin(contents[1]);
             }
          }
 

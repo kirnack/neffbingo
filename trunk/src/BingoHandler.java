@@ -82,27 +82,22 @@ public class BingoHandler
 
       System.out.println("Client: " + clientMessage);
 
-      if ("Bingo!".equals(clientMessage))
+      if (clientMessage.contains("Bingo!"))
       {
-         tellNotifier();
+         String[] contents = clientMessage.split(" ");
+         //Send the player name
+         mNotifier.notifyConnections(contents[1]);
       }
-   }
-   /**
-    * Tell the notifier that a bingo occurred
-    */
-   public void tellNotifier()
-   {
-      mNotifier.notifyConnections();
    }
 
    /**
     * Tell the client that someone got a bingo
     */
-   public void tellClient()
+   public void tellClient(String pWinner)
    {
       try
       {
-         mOut.writeBytes("Win\n");
+         mOut.writeBytes("Win " + pWinner + "\n");
       }
       catch (Exception e)
       {
