@@ -45,11 +45,14 @@ public class BingoNotifier
 
    public void registerConnection(BingoHandler mConnection)
    {
-      
+      mConnections.add(mConnection);
    }
 
    public void notifyConnections()
    {
-   
+      for (BingoHandler client : mConnections)
+      {
+         client.tellClient();
+      }
    }
 }
