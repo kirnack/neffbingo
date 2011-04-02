@@ -1,4 +1,8 @@
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
@@ -33,6 +37,9 @@ public class BingoHandler
    {
       mSocket = pSocket;
       mNotifier = BingoNotifier.getInstance();
+
+      //register this handler with the notifier
+      mNotifier.registerConnection(this);
    }
 
    /**
@@ -44,6 +51,7 @@ public class BingoHandler
       //Listen for a bingo from the client
       try
       {
+         listenForBingo();
          
       }
       catch (Exception e)
@@ -55,8 +63,22 @@ public class BingoHandler
   
 
    public void listenForBingo()
+      throws Exception
    {
-      
+      //Get a reference to the socket's input stream
+      InputStream in = mSocket.getInputStream();
+      DataOutputStream out = new DataOutputStream(mSocket.getOutputStream());
+
+      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+
+      //Get messages
+      String clientMessage = reader.readLine();
+
+      System.out.println("Client: " + clientMessage);
+
+      out.writeBytes(clientMessage + ", test");
+
    }
    /**
     * Tell the notifier that a bingo occurred

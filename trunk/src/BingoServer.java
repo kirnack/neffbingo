@@ -1,13 +1,7 @@
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.StringTokenizer;
 
 /**
  *
@@ -16,7 +10,7 @@ import java.util.StringTokenizer;
 public class BingoServer
 {
    /**
-    * Starting place for the WebServer
+    * Starting place for the BingoServer
     *
     * @param argv Command line arguments
     * @throws Exception
@@ -30,8 +24,19 @@ public class BingoServer
       //Establish the listen socket.
       ServerSocket welcomeSocket = new ServerSocket(port);
 
+      try
+      {
+         InetAddress addr = InetAddress.getLocalHost();
+         String ip = addr.getHostAddress();
 
-      //Process HTTP service requests in an infinite loop
+         System.out.println("Address: " + ip);
+      }
+      catch(Exception e)
+      {
+
+      }
+
+      //Process service requests in an infinite loop
       while (true)
       {
          //Listen for a TCP connection request
