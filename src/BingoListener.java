@@ -1,6 +1,5 @@
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
@@ -12,15 +11,32 @@ import java.net.Socket;
 public class BingoListener
    implements Runnable
 {
-   NeffBingo mBoard;
-   Socket mSocket;
+   /**
+    * Handle on the bingo board
+    */
+   private NeffBingo mBoard;
+   /**
+    * Handle on the connection between the client and server
+    */
+   private Socket mSocket;
 
-   BingoListener(Socket pSocket, NeffBingo pBoard)
+   /**
+    * Default Constructor
+    *
+    * @param pSocket The connection between the client and server
+    * @param pBoard The handle on the bingo board
+    */
+   public BingoListener(Socket pSocket, NeffBingo pBoard)
    {
       mBoard = pBoard;
       mSocket = pSocket;
    }
 
+   /**
+    * Listens for messages from the server. When someone has won it announces
+    * the winner to the user.
+    * 
+    */
    public void run()
    {
       String serverMessage;
@@ -34,13 +50,15 @@ public class BingoListener
          {
             serverMessage = inFromServer.readLine();
             System.out.println("Server: " + serverMessage);
+
+            //If the server indicates a win has occured
             if (serverMessage.contains("Win"))
             {
+               //Pull out and send the player name
                String[] contents = serverMessage.split(" ");
                mBoard.announceWin(contents[1]);
             }
          }
-
       }
       catch (Exception e)
       {
