@@ -1,0 +1,33 @@
+BOOPOP
+Brainhoney
+BOODPAP
+GERSY
+It Depends
+(You don't understand example)
+(Looks up word in class)
+Qui Veut Prier?
+emacs
+Whats wrong with this?
+(Compile fails, to make a point)
+(Compile fails, not sure why)
+Where is Trent?
+HAS-A and IS-A
+svn up
+Did anyone read my blog?
+Learn how to learn
+(Searches javasrc)
+(Runs Memonaid(R))
+*Reading Rainbow Time*
+Javadoc
+(References forgotten blog/email)
+Collaboration
+Why didn't you just do this the obvious way
+A word puzzle
+Stamp out and Abolish Redundancy!
+Separate VARY from SAME
+Program to an interface, not implementation
+Prefer composition to inheritance
+Main Isn't
+Constructors Should construct
+Ifs are Iffy
+Extensions Don't extend power
