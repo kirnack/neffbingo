@@ -19,17 +19,19 @@ public class BingoHandler
     * of a bingo
     */
    private BingoNotifier mNotifier;
-
-
    /**
     * Handle on the socket connection
     */
-   Socket mSocket;
-
-   BufferedReader mReadFromClient;
-   DataOutputStream mOut;
-
-
+   private Socket mSocket;
+   /**
+    * Handle on the input stream from the client
+    */
+   private BufferedReader mReadFromClient;
+   /**
+    * Handle on the output stream to the client
+    */
+   private DataOutputStream mOut;
+   
    /**
     * Constructor
     *
@@ -51,13 +53,13 @@ public class BingoHandler
    }
 
    /**
-    * Starting place for this Runnable
+    * Listens for the client to say they have a bingo
     */
    public void run()
    {
-      //register this handler with the notifier
+      //Register this handler with the notifier
       mNotifier.registerConnection(this);
-      //TODO: Implement
+
       //Listen for a bingo from the client
       try
       {
@@ -72,8 +74,12 @@ public class BingoHandler
       }
    }
 
-  
-
+   /**
+    * Listens for a bingo from the client. Tells the notifier to tell
+    * the other clients if there is.
+    *
+    * @throws Exception Error conditions are thrown
+    */
    public void listenForBingo()
       throws Exception
    {
@@ -82,16 +88,17 @@ public class BingoHandler
 
       System.out.println("Client: " + clientMessage);
 
+      //If the client has a bingo
       if (clientMessage.contains("Bingo!"))
       {
+         //Pull out and send the player name
          String[] contents = clientMessage.split(" ");
-         //Send the player name
          mNotifier.notifyConnections(contents[1]);
       }
    }
 
    /**
-    * Tell the client that someone got a bingo
+    * Tell the client that someone got a bingo. Used by the notifier.
     */
    public void tellClient(String pWinner)
    {

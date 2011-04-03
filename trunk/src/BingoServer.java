@@ -6,14 +6,22 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
+ * The BingoServer listens for players to connect and spawns
+ * a thread to handle each connection made.
  *
  * @author Devin Doman
  */
 public class BingoServer
    extends JFrame
 {
+   /**
+    * Used to show the IP address of the server
+    */
    private JLabel mMessage;
-   
+
+   /**
+    * Default constructor
+    */
    public BingoServer()
    {
       super("Bingo Server");
@@ -24,7 +32,6 @@ public class BingoServer
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       setVisible(true);
    }
-
 
    /**
     * Starting place for the BingoServer
@@ -37,6 +44,9 @@ public class BingoServer
       new BingoServer().run();
    }
 
+   /**
+    * Establishes socket connections with requesting clients
+    */
    public void run()
    {
       try

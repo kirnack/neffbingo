@@ -1,32 +1,54 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
  * Creates a Bingo board containing
  * quotes often spoken by Brother Neff.
  *
- * @author tblyons, domand, har3000
+ * @author tblyons, har3000, Devin Doman
  */
 public class NeffBingo
    implements ActionListener
 {
-   QuoteGen mQuoteGen;
-   JFrame mBoard;
-   JPanel mPanel;
-   JToggleButton[] tButton = new JToggleButton[25];
-   BingoListener mClient;
-
-   Socket mConnection;
-   DataOutputStream mOutToServer;
-
-   String mPlayerName;
+   /**
+    * Used to get the quotes for the board
+    */
+   private QuoteGen mQuoteGen;
+   /**
+    * The frame for the board
+    */
+   private JFrame mBoard;
+   /**
+    * The panel containing the board
+    */
+   private JPanel mPanel;
+   /**
+    * The buttons containing each quote
+    */
+   private JToggleButton[] tButton = new JToggleButton[25];
+   /**
+    * Listens for messages from the server
+    */
+   private BingoListener mClient;
+   /**
+    * The socket connection between the client and server
+    */
+   private Socket mConnection;
+   /**
+    * Handle on the output stream to the server
+    */
+   private DataOutputStream mOutToServer;
+   /**
+    * The name of the player
+    */
+   private String mPlayerName;
    
    /**
+    * Starting point for the bingo client
+    *
     * @param args the command line arguments
     */
    public static void main(String[] args)
@@ -35,6 +57,9 @@ public class NeffBingo
       game.play();
    }
 
+   /**
+    * Launch the NeffBingo game
+    */
    public void play()
    {
       try
@@ -54,15 +79,14 @@ public class NeffBingo
       // Create a new thread to establish a connection
       Thread thread = new Thread(mClient);
       // Start the thread.
-      thread.start();
-  
-      
+      thread.start();  
 
       mQuoteGen = new QuoteGen();
       mBoard = new JFrame();
       mPanel = new JPanel();
       mPanel.setLayout(new GridLayout(5,5));
 
+      //Extract random quotes and place them in the board
       for (int i = 0; i < 25; i++)
       {
          if (i != 12)
@@ -89,6 +113,11 @@ public class NeffBingo
       mBoard.setVisible(true);
    }
 
+   /**
+    * Determine whether there is a bingo condition
+    *
+    * @return True if there is a bingo
+    */
    public boolean isWin()
    {
       if (tButton[0].isSelected() && tButton[6].isSelected() && tButton[12].isSelected() &&
@@ -119,12 +148,20 @@ public class NeffBingo
       return false;
    }
 
+   /**
+    * The action that occurs when the button is pressed.
+    * Checks for a bingo for each selection
+    *
+    * @param event The action event
+    */
    public void actionPerformed(ActionEvent event)
    {
       JToggleButton button = (JToggleButton) event.getSource();
 
+      //If there is a bingo
       if (isWin())
       {
+         //Indicate a bingo on the board and tell the server
          tButton[12].setBackground(Color.RED);
          tButton[12].setText("BINGO!");
          tellBingoServer();
@@ -151,6 +188,11 @@ public class NeffBingo
       }
    }
 
+   /**
+    * Used when the server needs to indicate who the winner is
+    *
+    * @param pPlayer The player who won the bingo round
+    */
    public void announceWin(String pPlayer)
    {
       displayBingo(pPlayer);
@@ -159,10 +201,13 @@ public class NeffBingo
 
    /**
     * Reset the bingo board after someone has won
+    * 
     */
    public void resetBoard()
    {
       mQuoteGen = new QuoteGen();
+
+      //Pull out random quotes and place them in the board
       for (int i = 0; i < 25; i++)
       {
          if (i != 12)
@@ -180,11 +225,21 @@ public class NeffBingo
       }
    }
 
+   /**
+    * Display the winner to the user
+    *
+    * @param pPlayer The winner of the bingo round
+    */
    public void displayBingo(String pPlayer)
    {
       JOptionPane.showMessageDialog(null, "Bingo! " + pPlayer + " wins!");
    }
 
+   /**
+    * Gets from the user the IP address of the bingo server
+    *
+    * @return The string entered by the user
+    */
    public String getServerAddress()
    {
       String address = "";
@@ -192,6 +247,10 @@ public class NeffBingo
       return address;
    }
 
+   /**
+    * Gets from the user their player name for this game
+    * 
+    */
    public void getPlayerName()
    {
       mPlayerName =  JOptionPane.showInputDialog(null, "Player name: ");
