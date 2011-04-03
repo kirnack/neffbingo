@@ -23,6 +23,9 @@ public class QuoteGen
    {
       mQuotes = new ArrayList<String>();
       readQuotes("Quotes.txt");
+      
+      //TODO: implement resource folder, so that making jar will be easier
+      //readQuotes("res/Quotes.txt");
    }
 
    /**
@@ -36,6 +39,7 @@ public class QuoteGen
       try
       {
          in = new BufferedReader(new FileReader(pFile));
+         //in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(pFile)));
 
          //Read the data from the file and place in mQuotes
          while (in.ready())
